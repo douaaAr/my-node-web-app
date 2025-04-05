@@ -1,0 +1,31 @@
+            name: Deploy Node.js App to Render
+
+on:
+  push:
+    branches:
+      - main  # or master, depending on your default branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Specify the Node.js version to use
+
+      - name: Install dependencies
+        run: |
+          npm install
+        
+      - name: Deploy to Render
+        run: |
+          # Use Render CLI to deploy, or alternatively, you can deploy via GitHub Webhooks directly to Render
+          curl -fsSL https://cli.render.com | bash
+          render login --api-key ${{ secrets.RENDER_API_KEY }}
+          render deploy --service my-node-web-app
+
+          
